@@ -29,5 +29,6 @@ def upgrade():
 
 def downgrade():
     with op.batch_alter_table('donation') as batch_op:
-        batch_op.drop_constraint('fk_donation_user_id_user', type_='foreignkey')
+        batch_op.drop_constraint('fk_donation_user_id_user',
+                                 type_='foreignkey')
         batch_op.drop_column('user_id')
