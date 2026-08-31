@@ -20,14 +20,16 @@ SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
 
 
 @router.get(
-    "/", response_model=list[ProjectCharityDB], response_model_exclude_none=True
+    "/", response_model=list[ProjectCharityDB],
+    response_model_exclude_none=True
 )
 async def get_all_projects(session: SessionDep):
     projects = await charity_project_crud.get_multi(session)
     return projects
 
 
-@router.post("/", response_model=ProjectCharityDB, response_model_exclude_none=True)
+@router.post("/", response_model=ProjectCharityDB,
+             response_model_exclude_none=True)
 async def create_project(
     obj_in: ProjectCharityCreate,
     session: SessionDep,
@@ -37,7 +39,8 @@ async def create_project(
 
 
 @router.patch(
-    "/{project_id}", response_model=ProjectCharityDB, response_model_exclude_none=True
+    "/{project_id}", response_model=ProjectCharityDB,
+    response_model_exclude_none=True
 )
 async def update_project(
     project_id: int,
@@ -49,7 +52,8 @@ async def update_project(
 
 
 @router.delete(
-    "/{project_id}", response_model=ProjectCharityDB, response_model_exclude_none=True
+    "/{project_id}", response_model=ProjectCharityDB,
+    response_model_exclude_none=True
 )
 async def delete_project(
     project_id: int,

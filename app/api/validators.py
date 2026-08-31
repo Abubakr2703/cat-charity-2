@@ -15,7 +15,8 @@ async def check_project_exists(
     """Проверяет, существует ли проект, и возвращает его."""
     project = await charity_project_crud.get(project_id, session)
     if not project:
-        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Проект не найден")
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND,
+                            detail="Проект не найден")
     return project
 
 
@@ -58,5 +59,6 @@ def check_project_has_no_investments(project: CharityProject) -> None:
     if project.invested_amount > 0:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
-            detail="Нельзя удалить проект, где уже были инвестированы средства",
+            detail="Нельзя удалить проект,"
+            "где уже были инвестированы средства",
         )

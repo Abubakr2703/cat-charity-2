@@ -16,7 +16,8 @@ SessionDep = Annotated[AsyncSession, Depends(get_async_session)]
 
 
 @router.get(
-    "/my", response_model=list[DonationCreateResponse], response_model_exclude_none=True
+    "/my", response_model=list[DonationCreateResponse],
+    response_model_exclude_none=True
 )
 async def get_my_donations(
     session: SessionDep,
@@ -27,7 +28,8 @@ async def get_my_donations(
     return donations
 
 
-@router.get("/", response_model=list[DonationOut], response_model_exclude_none=True)
+@router.get("/", response_model=list[DonationOut],
+            response_model_exclude_none=True)
 async def get_all_donations(
     session: SessionDep,
     user: Annotated[User, Depends(current_superuser)],
@@ -37,7 +39,8 @@ async def get_all_donations(
 
 
 @router.post(
-    "/", response_model=DonationCreateResponse, response_model_exclude_none=True
+    "/", response_model=DonationCreateResponse,
+    response_model_exclude_none=True
 )
 async def create_donation(
     obj_in: DonationCreate,
