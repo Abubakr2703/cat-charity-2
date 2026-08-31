@@ -34,8 +34,7 @@ async def update_project_service(
     await session.refresh(db_project)
     check_project_not_closed(db_project)
     if obj_in.name is not None:
-        await check_project_name_duplicate(
-            obj_in.name, session, exclude_id=project_id)
+        await check_project_name_duplicate(obj_in.name, session, exclude_id=project_id)
     if obj_in.full_amount is not None:
         check_new_amount_more_than_invested(db_project, obj_in.full_amount)
     db_project = await charity_project_crud.update(db_project, obj_in, session)

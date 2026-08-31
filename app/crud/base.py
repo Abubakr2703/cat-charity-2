@@ -25,7 +25,7 @@ class CRUDBase:
         obj_in,
         session: AsyncSession,
         commit: bool = False,
-        user_id: Optional[int] = None
+        user_id: Optional[int] = None,
     ):
         """
         Создаёт объект, но НЕ делает commit автоматически.
@@ -33,7 +33,7 @@ class CRUDBase:
         """
         obj_in_data = obj_in.model_dump()
         if user_id is not None:
-            obj_in_data['user_id'] = user_id
+            obj_in_data["user_id"] = user_id
         db_obj = self.model(**obj_in_data)
         session.add(db_obj)
         if commit:
@@ -41,12 +41,7 @@ class CRUDBase:
             await session.refresh(db_obj)
         return db_obj
 
-    async def update(
-            self,
-            db_obj,
-            obj_in,
-            session: AsyncSession,
-            commit: bool = False):
+    async def update(self, db_obj, obj_in, session: AsyncSession, commit: bool = False):
         obj_data = jsonable_encoder(db_obj)
         update_data = obj_in.model_dump(exclude_unset=True)
         for field in obj_data:

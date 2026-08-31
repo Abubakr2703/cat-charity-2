@@ -6,9 +6,7 @@ from app.services.investment import process_investment
 
 
 async def create_donation_service(
-    obj_in: DonationCreate,
-    session: AsyncSession,
-    user_id: int
+    obj_in: DonationCreate, session: AsyncSession, user_id: int
 ):
     new_donation = await donation_crud.create(obj_in, session, user_id=user_id)
     await session.flush()

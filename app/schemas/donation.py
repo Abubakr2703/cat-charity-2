@@ -7,7 +7,7 @@ from pydantic import BaseModel, ConfigDict, Field
 class DonationCreate(BaseModel):
     full_amount: int = Field(..., gt=0)
     comment: Optional[str] = Field(None)
-    model_config = ConfigDict(extra='forbid')
+    model_config = ConfigDict(extra="forbid")
 
 
 class DonationOut(BaseModel):

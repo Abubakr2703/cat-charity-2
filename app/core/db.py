@@ -20,18 +20,19 @@ class CommonMixin:
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     full_amount: Mapped[int] = mapped_column(
-        Integer,
-        CheckConstraint('full_amount > 0', name='full_amount_positive'))
-    invested_amount: Mapped[int] = mapped_column(
-        Integer, CheckConstraint(
-            'invested_amount >= 0', name='invested_amount_non_negative',
-        ), default=0
+        Integer, CheckConstraint("full_amount > 0", name="full_amount_positive")
     )
-    fully_invested: Mapped[Boolean] = mapped_column(Boolean, default=False)
-    create_date: Mapped[datetime] = mapped_column(DateTime,
-                                                  default=datetime.now)
-    close_date: Mapped[datetime | None] = mapped_column(
-        DateTime, nullable=True)
+    invested_amount: Mapped[int] = mapped_column(
+        Integer,
+        CheckConstraint(
+            "invested_amount >= 0",
+            name="invested_amount_non_negative",
+        ),
+        default=0,
+    )
+    fully_invested: Mapped[bool] = mapped_column(Boolean, default=False)
+    create_date: Mapped[datetime] = mapped_column(DateTime, default=datetime.now)
+    close_date: Mapped[datetime | None] = mapped_column(DateTime, nullable=True)
 
 
 engine = create_async_engine(settings.database_url)

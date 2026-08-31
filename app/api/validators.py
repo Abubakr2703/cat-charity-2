@@ -10,21 +10,17 @@ from app.models.charity_project import CharityProject
 
 
 async def check_project_exists(
-        project_id: int, session: AsyncSession) -> CharityProject:
+    project_id: int, session: AsyncSession
+) -> CharityProject:
     """Проверяет, существует ли проект, и возвращает его."""
     project = await charity_project_crud.get(project_id, session)
     if not project:
-        raise HTTPException(
-            status_code=HTTPStatus.NOT_FOUND,
-            detail="Проект не найден"
-        )
+        raise HTTPException(status_code=HTTPStatus.NOT_FOUND, detail="Проект не найден")
     return project
 
 
 async def check_project_name_duplicate(
-        name: str,
-        session: AsyncSession,
-        exclude_id: Optional[int] = None
+    name: str, session: AsyncSession, exclude_id: Optional[int] = None
 ) -> None:
     stmt = select(CharityProject).where(CharityProject.name == name)
     if exclude_id is not None:
@@ -33,7 +29,7 @@ async def check_project_name_duplicate(
     if result.scalars().first():
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
-            detail="Проект с таким именем уже существует"
+            detail="Проект с таким именем уже существует",
         )
 
 
@@ -42,17 +38,18 @@ def check_project_not_closed(project: CharityProject) -> None:
     if project.fully_invested:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
-            detail="Закрытый проект нельзя редактировать"
+            detail="Закрытый проект нельзя редактировать",
         )
 
 
 def check_new_amount_more_than_invested(
-        project: CharityProject, new_full_amount: int) -> None:
+    project: CharityProject, new_full_amount: int
+) -> None:
     """Проверяет, что новая требуемая сумма не меньше уже инвестированной."""
     if new_full_amount < project.invested_amount:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
-            detail="Новую сумму нельзя установить ниже уже инвестированной"
+            detail="Новую сумму нельзя установить ниже уже инвестированной",
         )
 
 
@@ -61,5 +58,5 @@ def check_project_has_no_investments(project: CharityProject) -> None:
     if project.invested_amount > 0:
         raise HTTPException(
             status_code=HTTPStatus.BAD_REQUEST,
-            detail="Нельзя удалить проект, где уже были инвестированы средства"
+            detail="Нельзя удалить проект, где уже были инвестированы средства",
         )

@@ -1,3 +1,4 @@
+import logging
 from typing import Annotated, Optional, Union
 
 from fastapi import Depends, Request
@@ -13,14 +14,15 @@ from app.core.db import get_async_session
 from app.models.user import User
 from app.schemas.user import UserCreate
 
+logger = logging.getLogger(__name__)
+
 
 async def get_user_db(
-    session: Annotated[AsyncSession, Depends(get_async_session)]
-):
+        session: Annotated[AsyncSession, Depends(get_async_session)]):
     yield SQLAlchemyUserDatabase(session, User)
 
 
-bearer_transport = BearerTransport(tokenUrl='auth/jwt/login')
+bearer_transport = BearerTransport(tokenUrl="auth/jwt/login")
 
 
 def get_jwt_strategy() -> JWTStrategy:
@@ -28,7 +30,7 @@ def get_jwt_strategy() -> JWTStrategy:
 
 
 auth_backend = AuthenticationBackend(
-    name='jwt',
+    name="jwt",
     transport=bearer_transport,
     get_strategy=get_jwt_strategy,
 )
@@ -42,20 +44,15 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
         user: Union[UserCreate, User],
     ) -> None:
         if len(password) < 3:
-            error = 'Пароль должен содержать не менее 3 символов'
-            raise InvalidPasswordException(
-                reason=error
-            )
+            error = "Пароль должен содержать не менее 3 символов"
+            raise InvalidPasswordException(reason=error)
         if user.email in password:
-            error = 'Пароль не может содержать ваш email'
-            raise InvalidPasswordException(
-                reason=error
-            )
+            error = "Пароль не может содержать ваш email"
+            raise InvalidPasswordException(reason=error)
 
     async def on_after_register(
-            self, user: User, request: Optional[Request] = None
-    ):
-        print(f'Пользователь {user.email} зарегистрирован.')
+            self, user: User, request: Optional[Request] = None):
+        logger.info(f'Пользователь {user.email} зарегистрирован.')
 
 
 async def get_user_manager(user_db=Depends(get_user_db)):
