@@ -52,7 +52,7 @@ class UserManager(IntegerIDMixin, BaseUserManager[User, int]):
 
     async def on_after_register(
             self, user: User, request: Optional[Request] = None):
-        logger.info('Пользователь %s зарегистрирован.', user.email)
+        logger.info("Пользователь %s зарегистрирован.", user.email)
 
 
 async def get_user_manager(user_db=Depends(get_user_db)):

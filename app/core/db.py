@@ -20,8 +20,8 @@ class CommonMixin:
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     full_amount: Mapped[int] = mapped_column(
-        Integer, CheckConstraint(
-            "full_amount > 0", name="full_amount_positive")
+        Integer,
+        CheckConstraint("full_amount > 0", name="full_amount_positive")
     )
     invested_amount: Mapped[int] = mapped_column(
         Integer,
